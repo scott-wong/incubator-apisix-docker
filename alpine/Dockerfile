@@ -1,4 +1,7 @@
- FROM openresty/openresty:alpine-fat
+
+
+
+FROM openresty/openresty:alpine-fat
 
 ARG APISIX_VERSION=1.1
 LABEL apisix_version="${APISIX_VERSION}"
@@ -15,7 +18,12 @@ RUN apk add --no-cache --virtual .builddeps \
     && bin='#! /usr/local/openresty/luajit/bin/luajit\npackage.path = "/usr/local/apisix/lua/?.lua;" .. package.path' \
     && sed -i "1s@.*@$bin@" /usr/bin/apisix \
     && mv /usr/local/apisix/deps/share/lua/5.1/apisix/lua /usr/local/apisix \
-    && apk del .builddeps
+    && apk del .builddeps \
+    # 添加dashboard
+    && cd /usr/local/apisix \
+    && wget https://github.com/scott-wong/incubator-apisix-dashboard/releases/download/1.1/dist.tar.gz \
+    && tar zxf dist.tar.gz \
+    && mv dist dashboard
 
 WORKDIR /usr/local/apisix
 
