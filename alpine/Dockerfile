@@ -22,6 +22,7 @@ RUN echo "https://mirrors.aliyun.com/alpine/v3.9/main/" > /etc/apk/repositories 
     && cd /usr/local/apisix \
     && wget https://github.com/scott-wong/incubator-apisix-dashboard/releases/download/1.1/dist.tar.gz \
     && tar zxf dist.tar.gz \
+    && rm -f dist.tar.gz \
     && mv dist dashboard
 
 WORKDIR /usr/local/apisix
