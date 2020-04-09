@@ -36,7 +36,7 @@ pipeline {
         stage ('build & push') {
             steps {
                 container ('base') {
-                    sh 'docker build -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION --build-arg APISIX_VERSION=$VERSION -f alpine/Dockerfile alpine'
+                    sh 'docker build -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION --build-arg APISIX_VERSION=$VERSION -f centos/Dockerfile centos'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
                         sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" $REGISTRY --password-stdin'
                         sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION'
