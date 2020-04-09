@@ -12,7 +12,7 @@ RUN echo "https://mirrors.aliyun.com/alpine/v3.9/main/" > /etc/apk/repositories 
     pkgconfig \
     cmake \
     git \
-    && luarocks install https://github.com/apache/incubator-apisix/raw/master/rockspec/apisix-${APISIX_VERSION}-0.rockspec --tree=/usr/local/apisix/deps \
+    && luarocks install https://raw.githubusercontent.com/apache/incubator-apisix/master/rockspec/apisix-${APISIX_VERSION}-0.rockspec --tree=/usr/local/apisix/deps \
     && cp /usr/local/apisix/deps/lib/luarocks/rocks-5.1/apisix/${APISIX_VERSION}-0/bin/apisix /usr/bin/ \
     && bin='#! /usr/local/openresty/luajit/bin/luajit\npackage.path = "/usr/local/apisix/lua/?.lua;" .. package.path' \
     && sed -i "1s@.*@$bin@" /usr/bin/apisix \
