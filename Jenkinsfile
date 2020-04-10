@@ -22,7 +22,7 @@ pipeline {
         DOCKER_CREDENTIAL_ID = 'hna-id'
         // 阿里云registry.cn-hangzhou.aliyuncs.com，海航云bjdhub.haihangyun.com
         REGISTRY = 'bjdhub.haihangyun.com'
-        // 阿里云私有wangscott，公共scottwong，海航云wangyu5
+        // 阿里云私有:wangscott，公共&dockerhub:scottwong，海航云:wangyu5
         DOCKERHUB_NAMESPACE = 'wangyu5'
     }
 

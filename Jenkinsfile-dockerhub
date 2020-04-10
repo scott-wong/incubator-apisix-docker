@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+        node {
+            label 'base'
+        }
+    }
+
+    environment {
+        // app label
+        PROJECT = 'apisix'
+        // 服务唯一标识
+        APP_NAME = 'apisix'
+        VERSION = '1.1'
+
+        // 镜像密钥，官方dockerhub-cr，阿里云aliyun-cr 海航云 hna-cr
+        DOCKER_SECRETS = 'dockerhub-cr'
+
+        // 以下是devops公共配置
+        // 官方dockerhub-id，阿里云镜像用aliyun-id，海航云镜像用hna-id
+        DOCKER_CREDENTIAL_ID = 'dockerhub-id'
+        // 阿里云私有:wangscott，公共&dockerhub:scottwong，海航云:wangyu5
+        DOCKERHUB_NAMESPACE = 'scottwong'
+    }
+
+    stages {
+        stage ('checkout scm') {
+            steps {
+                checkout(scm)
+            }
+        }
+
+        stage ('build & push') {
+            steps {
+                container ('base') {
+                    sh 'docker build -t $DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION --build-arg APISIX_VERSION=$VERSION -f centos/Dockerfile-cn centos'
+                    withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                        sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                        sh 'docker push  $DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION'
+                        sh 'docker tag  $DOCKERHUB_NAMESPACE/$APP_NAME:$VERSION $DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+                        sh 'docker push  $DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+                    }
+                }
+            }
+        }
+
+    }
+}
