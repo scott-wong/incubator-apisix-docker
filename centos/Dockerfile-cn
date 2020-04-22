@@ -1,6 +1,6 @@
 FROM centos:7
 
-ARG APISIX_VERSION=1.1
+ARG APISIX_VERSION=1.2
 LABEL apisix_version="${APISIX_VERSION}"
 
 RUN yum -y install yum-utils\
@@ -13,10 +13,10 @@ RUN yum -y install yum-utils\
 WORKDIR /usr/local/apisix
 
 # add dashboard dist, 国内下载github release慢
-COPY dashboard/dist.tar.gz .
-RUN tar zxf dist.tar.gz \
-    && rm -f dist.tar.gz \
-    && mv dist dashboard
+# COPY dashboard/dist.tar.gz .
+# RUN tar zxf dist.tar.gz \
+#     && rm -f dist.tar.gz \
+#     && mv dist dashboard
 
 EXPOSE 9080 9443
 

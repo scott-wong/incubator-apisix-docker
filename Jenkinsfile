@@ -11,7 +11,7 @@ pipeline {
         NAMESPACE = 'cargo-dev'
         // 服务唯一标识
         APP_NAME = 'apisix'
-        VERSION = '1.1'
+        VERSION = '1.2'
 
         // 镜像密钥，官方dockerhub-cr，阿里云aliyun-cr 海航云 hna-cr
         DOCKER_SECRETS = 'hna-cr'
